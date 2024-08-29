@@ -29,6 +29,38 @@ export async function getBalance(address) { // xem so du cua dia chi
     }
   }
 
+  export async function getOwner() {
+    try {
+        const ownerAddress = await contract.methods.owner().call();
+        console.log(`Owner address: ${ownerAddress}`);
+        return ownerAddress;
+    } catch (error) {
+        console.error('Error getting owner:', error);
+    }
+  }
+
+  export async function getTotalSupply() {
+    try {
+        const totalSupply = await contract.methods.totalSupply().call();
+        console.log(`Total Supply: ${totalSupply}`);
+        return totalSupply;
+    } catch (error) {
+        console.error('Error getting total supply:', error);
+    }
+}
+
+export async function deposit(value,sender) {
+  
+  
+  try {
+      const result = await contract.methods.deposit(value).send({ from: sender });
+      console.log(`Transaction successful: ${result}`);
+      return result;
+  } catch (error) {
+      console.error('Error calling deposit:', error);
+  }
+}
+
 
 
 // goi cac ham trong hop dong thong minh
@@ -354,7 +386,11 @@ async function callNameFunction() {
     }
   }
 
-// getBlockNumber();
-// getBalance("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
-// checkContractExists("0x2a0EaF0858444CfF89b6c001acacF054039d0ACD");
-// callNameFunction();
+getBlockNumber();
+getBalance("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
+checkContractExists("0x2a0EaF0858444CfF89b6c001acacF054039d0ACD");
+callNameFunction();
+getOwner();
+// deposit(1000,"0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa")
+getTotalSupply();
+
