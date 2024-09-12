@@ -16,6 +16,17 @@ export async function getBalance(address) { // xem so du cua dia chi
     }
   }
 
+
+  export async function getTokenOf(address) {
+    try {
+      const result = await contract.methods.balanceOf(address).call();
+      console.log(`Token of ${address}: ${result}`);
+      return result;
+  } catch (error) {
+      console.error('Error calling deposit:', error);
+  }
+  }
+
  export async function checkContractExists(contractAddress) { // kiem tra hop dong co trong server hay khong
     try {
       const code = await web3.eth.getCode(contractAddress);
@@ -61,6 +72,67 @@ export async function deposit(value,sender) {
   }
 }
 
+export async function transferTokens(value, toAddress, sender) {
+  try {
+        const result = await contract.methods.transfer(toAddress,value).send({ from: sender });
+        console.log(`Transaction successful: ${result}`);
+        return result;
+    } catch (error) {
+        console.error('Error calling deposit:', error);
+    }
+}
+
+
+
+export async function createNewAccount() {
+  const senderAddress = '0xdC376E96b100E6003CF9CcA172227d1B95643a97';  // Thay thế bằng địa chỉ của bạn
+  const privateKey = '0xae8f2966afc5615e41af884e95a2ccc731e650285e08264cdc2dd85daadb43e1';
+  const account = await web3.eth.accounts.create();
+  const recipientAddress = account.address;  // Địa chỉ mới được tạo
+  const amountInEther = '2.00';
+  sendETH(senderAddress, privateKey, recipientAddress, amountInEther);
+ 
+  return {
+    address:account.address,
+    privateKey:account.privateKey
+  }
+}
+async function sendETH(fromAddress, privateKey, toAddress, amount) { 
+  try {
+    const nonce = await web3.eth.getTransactionCount(fromAddress, 'latest');
+    
+    // Estimate the gas required for the transaction
+    const gasEstimate = await web3.eth.estimateGas({
+      from: fromAddress,
+      to: toAddress,
+      value: web3.utils.toWei(amount, 'ether'),
+    });
+
+    const transaction = {
+      to: toAddress,
+      value: web3.utils.toWei(amount, 'ether'), // Amount in ETH
+      gas: gasEstimate,
+      gasPrice: web3.utils.toWei('20', 'gwei'), // Setting gasPrice manually (adjustable)
+      nonce: nonce,
+    };
+
+    // Sign the transaction with the sender's private key
+    const signedTx = await web3.eth.accounts.signTransaction(transaction, privateKey);
+
+    // Send the signed transaction
+    const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+
+    // Custom serialization to handle BigInt
+    console.log('Transaction receipt:', JSON.stringify(receipt, (key, value) =>
+      typeof value === 'bigint' ? value.toString() : value
+    ));
+
+    return receipt;
+    
+  } catch (error) {
+    console.error('Error sending ETH:', error);
+  }
+}
 
 
 // goi cac ham trong hop dong thong minh
@@ -385,15 +457,18 @@ async function callNameFunction() {
       console.error('Error calling name function:', error);
     }
   }
+  export default web3
+// getBlockNumber();
 
-getBlockNumber();
-getBalance("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
-checkContractExists("0x2a0EaF0858444CfF89b6c001acacF054039d0ACD");
-callNameFunction();
-getOwner();
-// deposit(1000,"0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa")
-getTotalSupply();
-
-
-
-
+// checkContractExists("0x2a0EaF0858444CfF89b6c001acacF054039d0ACD");
+// callNameFunction();
+// getOwner();
+// // deposit(1000,"0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa")
+ getTotalSupply();
+//  getTokenOf("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
+//  transferTokens(10,"0x8BECDD39740914bAd76e56D9a8C583088F9cbC5A","0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa")
+ getTokenOf("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
+ getTokenOf("0x8BECDD39740914bAd76e56D9a8C583088F9cbC5A");
+// createNewAccount();
+// getBalance('0xdC376E96b100E6003CF9CcA172227d1B95643a97')
+// getBalance('0xabceB066fCbe6976Ce5A128696342720680F2feB')
