@@ -10,6 +10,8 @@ app.use(express.json());
 app.use('/registerService', routerRegister);
 
 
+
+
 // Simple GET route
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

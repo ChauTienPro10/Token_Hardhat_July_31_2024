@@ -458,17 +458,17 @@ async function callNameFunction() {
     }
   }
   export default web3
-// getBlockNumber();
+//  getBlockNumber();
 
-// checkContractExists("0x2a0EaF0858444CfF89b6c001acacF054039d0ACD");
+//  checkContractExists("0x2a0EaF0858444CfF89b6c001acacF054039d0ACD");
 // callNameFunction();
-// getOwner();
+//  getOwner();
 // // deposit(1000,"0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa")
- getTotalSupply();
+//  getTotalSupply();
 //  getTokenOf("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
 //  transferTokens(10,"0x8BECDD39740914bAd76e56D9a8C583088F9cbC5A","0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa")
- getTokenOf("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
- getTokenOf("0x8BECDD39740914bAd76e56D9a8C583088F9cbC5A");
+//  getTokenOf("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
+//  getTokenOf("0x8BECDD39740914bAd76e56D9a8C583088F9cbC5A");
 // createNewAccount();
 // getBalance('0xdC376E96b100E6003CF9CcA172227d1B95643a97')
 // getBalance('0xabceB066fCbe6976Ce5A128696342720680F2feB')
