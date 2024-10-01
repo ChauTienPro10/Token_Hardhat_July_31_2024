@@ -1,9 +1,12 @@
 import express from "express";
-import { createNewAccount,getTokenOf } from "../interact/interation.js";
+import { createNewAccount,getTokenOf ,transferTokens} from "../interact/interation.js";
 import jwt  from "jsonwebtoken";
 import dotenv from 'dotenv';
+
 dotenv.config();
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const OWNER=process.env.OWNER;
+
 const routerRegister = express.Router();
 console.log('Private Key:', PRIVATE_KEY);
 routerRegister.get('/hello', async (req, res) => {
@@ -32,6 +35,17 @@ routerRegister.get('/getbalance',async (req,res)=>{
   }catch (error) {
     
         res.status(500).json({ error: error.message });
+      }
+})
+
+routerRegister.post('/trans.token',async (req,res)=>{
+  try{
+    await transferTokens(req.body.amount,req.body.email, OWNER) // emamil la address 
+    const balance = await getTokenOf(req.body.email);
+    return res.status(200).json({result:Number(balance)});
+  }catch (error) {
+    
+        res.status(500).json({ result:"ERROR" });
       }
 })
 export default routerRegister;

@@ -1,4 +1,8 @@
 import Web3 from 'web3';
+import dotenv from 'dotenv';
+dotenv.config();
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const OWNER=process.env.OWNER;
 const web3 = new Web3('HTTP://127.0.0.1:8545');
 
 export async function getBlockNumber() { // xem so khoi cua server
@@ -74,6 +78,8 @@ export async function deposit(value,sender) {
 
 export async function transferTokens(value, toAddress, sender) {
   try {
+        console.log(value);
+        console.log(toAddress);
         const result = await contract.methods.transfer(toAddress,value).send({ from: sender });
         console.log(`Transaction successful: ${result}`);
         return result;
@@ -466,7 +472,7 @@ async function callNameFunction() {
 // // deposit(1000,"0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa")
 //  getTotalSupply();
 //  getTokenOf("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
-//  transferTokens(10,"0x8BECDD39740914bAd76e56D9a8C583088F9cbC5A","0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa")
+//  transferTokens(10,"0x8BECDD39740914bAd76e56D9a8C583088F9cbC5A",OWNER)
 //  getTokenOf("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
 //  getTokenOf("0x8BECDD39740914bAd76e56D9a8C583088F9cbC5A");
 // createNewAccount();
