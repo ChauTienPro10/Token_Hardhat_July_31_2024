@@ -40,12 +40,30 @@ routerRegister.get('/getbalance',async (req,res)=>{
 
 routerRegister.post('/trans.token',async (req,res)=>{
   try{
-    await transferTokens(req.body.amount,req.body.email, OWNER) // emamil la address 
-    const balance = await getTokenOf(req.body.email);
-    return res.status(200).json({result:Number(balance)});
+    const resultStatus=await transferTokens(req.body.amount,req.body.email, OWNER) // emamil la address 
+    if(resultStatus){
+      return res.status(200).json({result:Number(await getTokenOf(req.body.email))});
+    }
+    else{
+      res.status(500).json({ result:0 });
+    }
   }catch (error) {
-    
-        res.status(500).json({ result:"ERROR" });
+        res.status(500).json({ result:0 });
+      }
+})
+
+routerRegister.post('/pay.token',async (req,res)=>{
+  try{
+    const resultStatus=await transferTokens(req.body.amount, OWNER,req.body.email) // emamil la address 
+    console.log(req.body.email);
+    if(resultStatus){
+      return res.status(200).json({result:Number(await getTokenOf(req.body.email))});
+    }
+    else{
+      res.status(500).json({ result:0 });
+    }
+  }catch (error) {
+        res.status(500).json({ result:0 });
       }
 })
 export default routerRegister;

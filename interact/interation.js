@@ -19,7 +19,11 @@ export async function getBalance(address) { // xem so du cua dia chi
       console.error('Error getting balance:', error);
     }
   }
-
+  function stringifyBigInt(obj) {
+    return JSON.stringify(obj, (key, value) => {
+        return typeof value === 'bigint' ? value.toString() : value;
+    });
+}
 
   export async function getTokenOf(address) {
     try {
@@ -81,8 +85,8 @@ export async function transferTokens(value, toAddress, sender) {
         console.log(value);
         console.log(toAddress);
         const result = await contract.methods.transfer(toAddress,value).send({ from: sender });
-        console.log(`Transaction successful: ${result}`);
-        return result;
+       
+        return result.status;
     } catch (error) {
         console.error('Error calling deposit:', error);
     }
@@ -97,7 +101,7 @@ export async function createNewAccount() {
   const recipientAddress = account.address;  // Địa chỉ mới được tạo
   const amountInEther = '2.00';
   sendETH(senderAddress, privateKey, recipientAddress, amountInEther);
- 
+  web3.eth.accounts.wallet.add(account.privateKey);
   return {
     address:account.address,
     privateKey:account.privateKey
@@ -471,8 +475,9 @@ async function callNameFunction() {
 //  getOwner();
 // // deposit(1000,"0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa")
 //  getTotalSupply();
-//  getTokenOf("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
-//  transferTokens(10,"0x8BECDD39740914bAd76e56D9a8C583088F9cbC5A",OWNER)
+  // getTokenOf("0xEA09DAF10d6CA692b2F4ED8A741De01e1a61E977");
+  // web3.eth.getAccounts().then(console.log);
+  //  transferTokens(10,OWNER,"0xEA09DAF10d6CA692b2F4ED8A741De01e1a61E977")
 //  getTokenOf("0x5c42a72Ed9862e62d9a0D4601C4a46c85a13bffa");
 //  getTokenOf("0x8BECDD39740914bAd76e56D9a8C583088F9cbC5A");
 // createNewAccount();
