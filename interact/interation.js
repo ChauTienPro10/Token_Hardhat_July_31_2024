@@ -92,7 +92,9 @@ export async function transferTokens(value, toAddress, sender) {
     }
 }
 
-
+export async function addKeyToBlockChain(key) {
+  web3.eth.accounts.wallet.add(key);
+}
 
 export async function createNewAccount() {
   const senderAddress = '0xdC376E96b100E6003CF9CcA172227d1B95643a97';  // Thay thế bằng địa chỉ của bạn
@@ -101,7 +103,7 @@ export async function createNewAccount() {
   const recipientAddress = account.address;  // Địa chỉ mới được tạo
   const amountInEther = '2.00';
   sendETH(senderAddress, privateKey, recipientAddress, amountInEther);
-  web3.eth.accounts.wallet.add(account.privateKey);
+  
   return {
     address:account.address,
     privateKey:account.privateKey
